@@ -1,20 +1,446 @@
+<!------------------------- 告诉浏览器这是 HTML5 文档 ------------------------->
 <!DOCTYPE html>
+
+<!------------------------- html：整个网页的根容器 ------------------------->
 <html>
-<head>
-    <title>测试页面</title>
-</head>
-<body>
-    <h1>Hello World!</h1>
-    <p>这是一个简单的测试页面</p>
 
-    <button onclick="sayHello()">点击我</button>
+    <!------------------------- head：网页头部信息，用户看不到的设置 ------------------------->
+    <head>
+        <title>Prompt Tagger - 图片标签生成工具</title>
+        
+        <!------------------------- style：CSS样式代码，美化页面 ------------------------->
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 20px;
+                background-color: #f5f5f5;
+                height: 100vh;
+                overflow: hidden;
+            }
+            
+            .header-section {
+                text-align: center;
+                margin-bottom: 20px;
+                padding: 15px;
+                background-color: white;
+                border-radius: 8px;
+                border: 2px solid #007bff;
+            }
+            
+            .main-container {
+                display: flex;
+                height: calc(100vh - 140px);
+                gap: 20px;
+            }
+            
+            .left-panel {
+                flex: 1;
+                background-color: white;
+                border-radius: 8px;
+                padding: 20px;
+                overflow-y: auto;
+                border: 2px solid #28a745;
+            }
+            
+            .right-panel {
+                flex: 1;
+                background-color: white;
+                border-radius: 8px;
+                padding: 20px;
+                border: 2px solid #dc3545;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .panel-title {
+                font-size: 18px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 15px;
+                padding: 10px;
+                background-color: #f8f9fa;
+                border-radius: 5px;
+                text-align: center;
+            }
+            
+            .category-section {
+                margin: 15px 0;
+                padding: 15px;
+                border: 2px solid #ddd;
+                border-radius: 8px;
+                background-color: #fafafa;
+            }
+            
+            .category-title {
+                font-size: 16px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 10px;
+                padding: 8px;
+                background-color: #e9ecef;
+                border-radius: 5px;
+            }
+            
+            .dropdown-item {
+                margin: 8px 0;
+                padding: 8px;
+                border: 1px solid #eee;
+                border-radius: 5px;
+                background-color: white;
+            }
+            
+            label {
+                display: block;
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #555;
+                font-size: 14px;
+            }
+            
+            select {
+                width: 100%;
+                padding: 6px;
+                font-size: 14px;
+                border: 2px solid #ddd;
+                border-radius: 4px;
+                background-color: white;
+            }
+            
+            select:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+            
+            .control-buttons {
+                text-align: center;
+                margin-bottom: 15px;
+                padding: 10px;
+                background-color: #f8f9fa;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+            }
+            
+            button {
+                background-color: #007bff;
+                color: white;
+                font-size: 14px;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 3px;
+            }
+            
+            button:hover {
+                background-color: #0056b3;
+            }
+            
+            .load-btn {
+                background-color: #28a745;
+            }
+            
+            .load-btn:hover {
+                background-color: #218838;
+            }
+            
+            .preview-btn {
+                background-color: #17a2b8;
+            }
+            
+            .preview-btn:hover {
+                background-color: #138496;
+            }
+            
+            .generate-btn {
+                background-color: #dc3545;
+            }
+            
+            .generate-btn:hover {
+                background-color: #c82333;
+            }
+            
+            .download-btn {
+                background-color: #6f42c1;
+                font-size: 16px;
+                padding: 12px 20px;
+            }
+            
+            .download-btn:hover {
+                background-color: #5a32a3;
+            }
+            
+            .clear-btn {
+                background-color: #6c757d;
+            }
+            
+            .clear-btn:hover {
+                background-color: #545b62;
+            }
+            
+            #result {
+                flex: 1;
+                padding: 15px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                background-color: #f9f9f9;
+                font-family: monospace;
+                line-height: 1.5;
+                overflow-y: auto;
+                margin-top: 10px;
+                font-size: 13px;
+            }
+            
+            .filename-input {
+                margin: 10px 0;
+                padding: 10px;
+                background-color: #e9ecef;
+                border-radius: 5px;
+                border: 1px solid #ddd;
+            }
+            
+            .filename-input input {
+                width: 70%;
+                padding: 8px;
+                border: 2px solid #ddd;
+                border-radius: 4px;
+                font-size: 14px;
+            }
+            
+            .filename-input input:focus {
+                border-color: #007bff;
+                outline: none;
+            }
+        </style>
+        <!------------------------- style结束 ------------------------->
+    </head>
+    <!------------------------- head结束 ------------------------->
 
-    <p id="result"></p>
+    <!------------------------- body：网页主体内容，用户能看到的部分 ------------------------->
+    <body>
+        
+        <!------------------------- div：页面头部区域 ------------------------->
+        <div class="header-section">
+            <h1>🎯 Prompt Tagger - 图片标签生成工具</h1>
+            <p>📝 选择标签枚举，生成图片描述文本，下载为 .txt 文件</p>
+        </div>
+        <!------------------------- div结束 ------------------------->
 
-    <script>
-        function sayHello() {
-            document.getElementById('result').innerHTML = "你好！测试成功！";
-        }
-    </script>
-</body>
+        <!------------------------- div：主容器，左右分栏 ------------------------->
+        <div class="main-container">
+            
+            <!------------------------- div：左侧面板，枚举选择区域 ------------------------->
+            <div class="left-panel">
+                <div class="panel-title">📋 标签选择区域</div>
+                
+                <!------------------------- div：控制按钮区域 ------------------------->
+                <div class="control-buttons">
+                    <button class="load-btn" onclick="Load_All_Enums()">🔄 加载标签选项</button>
+                    <button class="clear-btn" onclick="Clear_All_Selections()">🗑️ 清空所有选择</button>
+                </div>
+                <!------------------------- div结束 ------------------------->
+                
+                <!------------------------- div：下拉框容器区域 ------------------------->
+                <div id="dropdowns_container">
+                    <div style="text-align: center; padding: 40px; color: #666;">
+                        💡 点击"加载标签选项"按钮开始
+                    </div>
+                </div>
+                <!------------------------- div结束 ------------------------->
+            </div>
+            <!------------------------- div结束 ------------------------->
+
+            <!------------------------- div：右侧面板，结果预览区域 ------------------------->
+            <div class="right-panel">
+                <div class="panel-title">📝 结果预览区域</div>
+                
+                <!------------------------- div：文件名输入区域 ------------------------->
+                <div class="filename-input">
+                    <label for="filename">📄 文件名：</label>
+                    <input type="text" id="filename" placeholder="输入文件名（不需要.txt后缀）" value="prompt">
+                </div>
+                <!------------------------- div结束 ------------------------->
+                
+                <!------------------------- div：控制按钮区域 ------------------------->
+                <div class="control-buttons">
+                    <button class="preview-btn" onclick="Preview_Result()">👁️ 预览结果</button>
+                    <button class="generate-btn" onclick="Generate_Result()">✨ 生成结果</button>
+                    <button class="download-btn" onclick="Download_Result()">💾 下载结果</button>
+                </div>
+                <!------------------------- div结束 ------------------------->
+                
+                <!------------------------- div：结果显示区域 ------------------------->
+                <div id="result">
+                    💡 点击"预览结果"按钮查看生成的标签文本
+                </div>
+                <!------------------------- div结束 ------------------------->
+            </div>
+            <!------------------------- div结束 ------------------------->
+        </div>
+        <!------------------------- div结束 ------------------------->
+
+        <!------------------------- script：JavaScript代码区域，实现交互功能 ------------------------->
+        <script>
+            // 全局变量：存储所有枚举数据
+            let all_enums = {};
+            
+            // 全局变量：存储所有选择的值
+            let all_selections = {};
+            
+            // 函数：加载所有枚举数据
+            async function Load_All_Enums() {
+                try {
+                    // 从data目录加载枚举数据
+                    const response = await fetch('data/enums.json');
+                    all_enums = await response.json();
+                    
+                    // 清空下拉框容器
+                    const container = document.getElementById('dropdowns_container');
+                    container.innerHTML = '';
+                    
+                    // 遍历所有枚举，创建下拉框
+                    for (const [category, items] of Object.entries(all_enums)) {
+                        // 创建分类区域
+                        const categoryDiv = document.createElement('div');
+                        categoryDiv.className = 'category-section';
+                        
+                        // 创建分类标题
+                        const titleDiv = document.createElement('div');
+                        titleDiv.className = 'category-title';
+                        titleDiv.textContent = category;
+                        categoryDiv.appendChild(titleDiv);
+                        
+                        // 创建下拉框
+                        const select = document.createElement('select');
+                        select.id = category;
+                        select.onchange = function() {
+                            all_selections[category] = this.value;
+                        };
+                        
+                        // 添加默认选项
+                        const defaultOption = document.createElement('option');
+                        defaultOption.value = '';
+                        defaultOption.textContent = '-- 请选择 --';
+                        select.appendChild(defaultOption);
+                        
+                        // 添加选项
+                        for (const item of items) {
+                            const option = document.createElement('option');
+                            option.value = item;
+                            option.textContent = item;
+                            select.appendChild(option);
+                        }
+                        
+                        categoryDiv.appendChild(select);
+                        container.appendChild(categoryDiv);
+                    }
+                    
+                    // 显示成功消息
+                    alert('✅ 标签选项加载成功！');
+                } catch (error) {
+                    console.error('加载枚举数据失败：', error);
+                    alert('❌ 加载标签选项失败，请检查网络连接或刷新页面重试');
+                }
+            }
+            
+            // 函数：清空所有选择
+            function Clear_All_Selections() {
+                // 清空选择记录
+                all_selections = {};
+                
+                // 重置所有下拉框
+                const selects = document.querySelectorAll('select');
+                selects.forEach(select => {
+                    select.value = '';
+                });
+                
+                // 清空结果显示
+                document.getElementById('result').innerHTML = '💡 点击"预览结果"按钮查看生成的标签文本';
+                
+                // 显示成功消息
+                alert('✅ 所有选择已清空！');
+            }
+            
+            // 函数：预览结果
+            function Preview_Result() {
+                // 获取所有非空选择
+                const selected_values = Object.entries(all_selections)
+                    .filter(([_, value]) => value !== '')
+                    .map(([_, value]) => value);
+                
+                // 生成结果文本
+                const result_text = selected_values.join(', ');
+                
+                // 显示结果
+                const result_div = document.getElementById('result');
+                if (selected_values.length > 0) {
+                    result_div.innerHTML = result_text;
+                } else {
+                    result_div.innerHTML = '⚠️ 请先选择至少一个标签选项';
+                }
+            }
+            
+            // 函数：生成结果
+            function Generate_Result() {
+                // 获取所有非空选择
+                const selected_values = Object.entries(all_selections)
+                    .filter(([_, value]) => value !== '')
+                    .map(([_, value]) => value);
+                
+                // 生成结果文本
+                const result_text = selected_values.join(', ');
+                
+                // 显示结果
+                const result_div = document.getElementById('result');
+                if (selected_values.length > 0) {
+                    result_div.innerHTML = result_text;
+                    alert('✅ 标签文本生成成功！');
+                } else {
+                    result_div.innerHTML = '⚠️ 请先选择至少一个标签选项';
+                    alert('❌ 请先选择至少一个标签选项');
+                }
+            }
+            
+            // 函数：下载结果
+            function Download_Result() {
+                // 获取文件名
+                const filename = document.getElementById('filename').value.trim() || 'prompt';
+                
+                // 获取所有非空选择
+                const selected_values = Object.entries(all_selections)
+                    .filter(([_, value]) => value !== '')
+                    .map(([_, value]) => value);
+                
+                // 生成结果文本
+                const result_text = selected_values.join(', ');
+                
+                // 检查是否有选择
+                if (selected_values.length === 0) {
+                    alert('❌ 请先选择至少一个标签选项');
+                    return;
+                }
+                
+                // 创建下载链接
+                const blob = new Blob([result_text], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${filename}.txt`;
+                
+                // 触发下载
+                document.body.appendChild(a);
+                a.click();
+                
+                // 清理
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                // 显示成功消息
+                alert('✅ 文件下载成功！');
+            }
+        </script>
+        <!------------------------- script结束 ------------------------->
+    </body>
+    <!------------------------- body结束 ------------------------->
 </html>
+<!------------------------- html结束 ------------------------->

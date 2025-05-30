@@ -1,0 +1,59 @@
+﻿{
+  "远景": "long shot, wide shot, character occupies 1/10 to 1/5 of frame",
+  "中景": "medium shot, character occupies 1/5 to 1/2 of frame", 
+  "近景": "close shot, character occupies 1/2 to 3/4 of frame",
+  "特写": "close-up, extreme close-up, detailed view",
+  
+  "全身": "full body, head-to-toe",
+  "半身（腰部以上）": "half body, waist up",
+  "半身（胸部以上）": "half body, chest up",
+  "半身（肩部以上）": "half body, shoulder up", 
+  "头肩": "head and shoulders, portrait",
+  
+  "鸟瞰（俯视）": "bird's eye view, top-down view",
+  "俯视角度": "high angle, looking down 10-45 degrees",
+  "平视": "eye level, straight on, 0 degrees",
+  "仰视": "low angle, looking up 10-45 degrees",
+  "仰视角度": "worm's eye view, extreme low angle",
+  
+  "男性": "male, man, masculine",
+  "女性": "female, woman, feminine",
+  "非二元性别": "non-binary, gender neutral",
+  "其他": "other gender, unspecified gender",
+  
+  "儿童（0-12岁）": "child, kid, young, 0-12 years old",
+  "青少年（13-17岁）": "teenager, teen, adolescent, 13-17 years old",
+  "青年（18-30岁）": "young adult, youth, 18-30 years old",
+  "中年（31-50岁）": "middle-aged, adult, 31-50 years old",
+  "老年（51岁以上）": "elderly, senior, old, 51+ years old",
+  
+  "瘦弱": "slender, thin, skinny, lean",
+  "标准": "average, normal, medium build",
+  "丰满": "curvy, voluptuous, full-figured",
+  "结实": "athletic, fit, toned, muscular",
+  "强壮": "muscular, strong, buff, powerful",
+  
+  "微笑": "smile, smiling, happy expression",
+  "愤怒": "angry, mad, furious, rage",
+  "悲伤": "sad, crying, melancholy, sorrowful",
+  "惊讶": "surprised, shocked, amazed, astonished",
+  "冷漠": "neutral, expressionless, stoic, blank",
+  "调皮": "playful, mischievous, cheeky",
+  "狡黠": "sly, cunning, devious, smirk",
+  
+  "站立": "standing, upright, standing pose",
+  "坐姿": "sitting, seated, sitting pose",
+  "行走": "walking, striding, in motion",
+  "奔跑": "running, sprinting, jogging",
+  "跳跃": "jumping, leaping, airborne",
+  "战斗姿势": "combat stance, fighting pose, battle ready",
+  
+  "现代": "modern, contemporary, current fashion",
+  "中世纪": "medieval, middle ages, historical",
+  "巴洛克": "baroque, ornate, classical, elaborate",
+  
+  "室内": "indoor, interior, inside",
+  "室外": "outdoor, exterior, outside",
+  "城市": "urban, city, metropolitan",
+  "自然": "nature, natural, wilderness, landscape"
+}
