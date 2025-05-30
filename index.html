@@ -206,6 +206,54 @@
             border-color: #007bff;
             outline: none;
         }
+        
+        .add-enum-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .form-group {
+            margin-bottom: 10px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        
+        .add-enum-btn {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .add-enum-btn:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
@@ -232,6 +280,32 @@
         
         <div class="right-panel">
             <div class="panel-title">📝 结果预览区域</div>
+            
+            <!-- 添加新的枚举表单 -->
+            <div class="add-enum-section">
+                <div class="panel-title">➕ 添加新标签枚举</div>
+                <div class="form-group">
+                    <label for="enum_category">分类名称：</label>
+                    <input type="text" id="enum_category" placeholder="例如：人物特征">
+                </div>
+                <div class="form-group">
+                    <label for="enum_name">枚举名称：</label>
+                    <input type="text" id="enum_name" placeholder="例如：性别">
+                </div>
+                <div class="form-group">
+                    <label for="enum_key">枚举键名：</label>
+                    <input type="text" id="enum_key" placeholder="例如：gender">
+                </div>
+                <div class="form-group">
+                    <label for="enum_values">枚举值（用逗号分隔）：</label>
+                    <input type="text" id="enum_values" placeholder="例如：男性,女性">
+                </div>
+                <div class="form-group">
+                    <label for="enum_english">英文映射（用逗号分隔）：</label>
+                    <input type="text" id="enum_english" placeholder="例如：male,female">
+                </div>
+                <button class="add-enum-btn" onclick="Add_New_Enum()">添加枚举</button>
+            </div>
             
             <div class="filename-input">
                 <label for="filename">📄 文件名：</label>
@@ -281,11 +355,11 @@
                     'camera_angle': '平视',
                     'gender': '女性',
                     'shot_range': '全身',
-                    'age_group': '青年（18-30岁）',
+                    'age_group': '青年',
                     'body_type': '标准',
-                    'skin_tone': '自然',
+                    'skin_tone': '白皙',
                     'hair_style': '长发',
-                    'hair_color': '黑色',
+                    'hair_color': '黑发',
                     'features': '无',
                     'head_direction': '正面',
                     'eye_direction': '与镜头对视',
@@ -390,6 +464,7 @@
             alert('✅ 所有选择已清空！');
         }
         
+        
         // 函数：预览结果
         function Preview_Result() {
             // 获取所有选择（包括空值）
@@ -434,7 +509,7 @@
             const selected_values = Object.entries(all_enums).map(([key, data]) => {
                 const value = all_selections[key] || '无';
                 const english_value = strings_map[value] || 'none';
-                return `${key}:${english_value}`;
+                return `${key}:${english_value},`;
             });
             
             // 检查是否有选择
@@ -463,6 +538,162 @@
             
             // 显示成功消息
             alert('✅ 英文标签文件下载成功！');
+        }
+        
+        // 函数：添加新的枚举
+        async function Add_New_Enum() {
+            try {
+                // 获取表单数据
+                const category = document.getElementById('enum_category').value.trim();
+                const name = document.getElementById('enum_name').value.trim();
+                const key = document.getElementById('enum_key').value.trim();
+                const values = document.getElementById('enum_values').value.trim().split(',').map(v => v.trim());
+                const english = document.getElementById('enum_english').value.trim().split(',').map(v => v.trim());
+                
+                // 验证数据
+                if (!category || !name || !key || values.length === 0 || english.length === 0) {
+                    alert('❌ 请填写所有字段！');
+                    return;
+                }
+                
+                if (values.length !== english.length) {
+                    alert('❌ 枚举值和英文映射数量不匹配！');
+                    return;
+                }
+                
+                console.log('开始读取现有数据...');
+                
+                // 读取现有数据
+                let enumsData = {};
+                let stringsData = {};
+                
+                try {
+                    const enumsResponse = await fetch('assets/config/enums.json');
+                    if (!enumsResponse.ok) {
+                        console.log('enums.json不存在，将创建新文件');
+                    } else {
+                        enumsData = await enumsResponse.json();
+                        console.log('成功读取enums.json');
+                    }
+                } catch (error) {
+                    console.log('enums.json不存在，将创建新文件');
+                }
+                
+                try {
+                    const stringsResponse = await fetch('assets/config/strings.json');
+                    if (!stringsResponse.ok) {
+                        console.log('strings.json不存在，将创建新文件');
+                    } else {
+                        stringsData = await stringsResponse.json();
+                        console.log('成功读取strings.json');
+                    }
+                } catch (error) {
+                    console.log('strings.json不存在，将创建新文件');
+                }
+                
+                // 检查键名是否已存在
+                if (enumsData[key]) {
+                    alert('❌ 该枚举键名已存在！');
+                    return;
+                }
+                
+                console.log('添加新的枚举数据...');
+                
+                // 添加新的枚举数据
+                enumsData[key] = {
+                    category: category,
+                    name: name,
+                    options: values
+                };
+                
+                // 添加新的字符串映射
+                values.forEach((value, index) => {
+                    stringsData[value] = english[index];
+                });
+                
+                console.log('保存数据到文件...');
+                
+                // 保存到文件
+                const saveResponse = await fetch('/api/save_enum', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        enums: enumsData,
+                        strings: stringsData
+                    })
+                });
+                
+                if (!saveResponse.ok) {
+                    throw new Error(`保存失败: ${saveResponse.status}`);
+                }
+                
+                const saveResult = await saveResponse.json();
+                
+                if (!saveResult.success) {
+                    throw new Error(saveResult.message);
+                }
+                
+                console.log('创建新的分类区域...');
+                
+                // 创建新的分类区域
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'category-section';
+                
+                // 创建分类标题
+                const titleDiv = document.createElement('div');
+                titleDiv.className = 'category-title';
+                titleDiv.textContent = `${category} - ${name}`;
+                categoryDiv.appendChild(titleDiv);
+                
+                // 创建按钮组容器
+                const buttonGroup = document.createElement('div');
+                buttonGroup.className = 'button-group';
+                
+                // 添加选项按钮
+                values.forEach(value => {
+                    const button = document.createElement('button');
+                    button.className = 'option-button';
+                    button.textContent = value;
+                    button.onclick = function() {
+                        // 移除同组其他按钮的选中状态
+                        const buttons = buttonGroup.querySelectorAll('.option-button');
+                        buttons.forEach(btn => btn.classList.remove('selected'));
+                        
+                        // 设置当前按钮为选中状态
+                        this.classList.add('selected');
+                        
+                        // 更新选择记录
+                        all_selections[key] = value;
+                    };
+                    
+                    buttonGroup.appendChild(button);
+                });
+                
+                categoryDiv.appendChild(buttonGroup);
+                
+                // 添加到左侧面板
+                const container = document.getElementById('dropdowns_container');
+                container.appendChild(categoryDiv);
+                
+                // 更新全局变量
+                all_enums = enumsData;
+                strings_map = stringsData;
+                
+                // 清空表单
+                document.getElementById('enum_category').value = '';
+                document.getElementById('enum_name').value = '';
+                document.getElementById('enum_key').value = '';
+                document.getElementById('enum_values').value = '';
+                document.getElementById('enum_english').value = '';
+                
+                // 显示成功消息
+                alert('✅ 新枚举添加成功！');
+            } catch (error) {
+                console.error('添加枚举失败：', error);
+                alert('❌ 添加失败：' + error.message + '\n请查看控制台获取详细信息');
+            }
         }
     </script>
 </body>

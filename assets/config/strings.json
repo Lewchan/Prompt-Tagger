@@ -1,10 +1,14 @@
 ﻿{
+
+  "无": "none",
+
   "远景": "long shot, wide shot, character occupies 1/10 to 1/5 of frame",
   "中景": "medium shot, character occupies 1/5 to 1/2 of frame", 
   "近景": "close shot, character occupies 1/2 to 3/4 of frame",
   "特写": "close-up, extreme close-up, detailed view",
   
   "全身": "full body, head-to-toe",
+  "半身 (膝盖以上)":  "half body, knee up",
   "半身（腰部以上）": "half body, waist up",
   "半身（胸部以上）": "half body, chest up",
   "半身（肩部以上）": "half body, shoulder up", 
@@ -16,16 +20,15 @@
   "仰视": "low angle, looking up 10-45 degrees",
   "仰视角度": "worm's eye view, extreme low angle",
   
-  "男性": "male, man, masculine",
-  "女性": "female, woman, feminine",
-  "非二元性别": "non-binary, gender neutral",
+  "男性": "1 male",
+  "女性": "1 female",
   "其他": "other gender, unspecified gender",
   
-  "儿童（0-12岁）": "child, kid, young, 0-12 years old",
-  "青少年（13-17岁）": "teenager, teen, adolescent, 13-17 years old",
-  "青年（18-30岁）": "young adult, youth, 18-30 years old",
-  "中年（31-50岁）": "middle-aged, adult, 31-50 years old",
-  "老年（51岁以上）": "elderly, senior, old, 51+ years old",
+  "儿童": "child, kid, young",
+  "青少年": "teenager, teen, adolescent",
+  "青年": "young adult, youth",
+  "中年": "middle-aged, adult",
+  "老年": "elderly, senior",
   
   "瘦弱": "slender, thin, skinny, lean",
   "标准": "average, normal, medium build",
@@ -34,10 +37,10 @@
   "强壮": "muscular, strong, buff, powerful",
   
   "白皙": "fair skin, pale skin, light skin",
-  "自然": "natural skin tone, medium skin",
+  "自然肤色": "natural skin tone, medium skin",
   "小麦色": "tan skin, sun-kissed skin",
   "深色": "dark skin, deep skin tone",
-  "其他": "other skin tone, unique skin tone",
+  "其他肤色": "other skin tone, unique skin tone",
   
   "长发": "long hair, flowing hair",
   "短发": "short hair, cropped hair",
@@ -45,26 +48,27 @@
   "直发": "straight hair, sleek hair",
   "马尾": "ponytail, tied back hair",
   "辫子": "braided hair, plaited hair",
-  "其他": "other hairstyle, unique hairstyle",
+  "其他发型": "other hairstyle, unique hairstyle",
   
-  "金色": "blonde hair, golden hair",
-  "棕色": "brown hair, brunette",
-  "黑色": "black hair, dark hair",
-  "红色": "red hair, auburn hair",
-  "其他": "other hair color, unique hair color",
+  "金发": "blonde hair, golden hair",
+  "棕发": "brown hair, brunette",
+  "黑发": "black hair, dark hair",
+  "红发": "red hair, auburn hair",
+  "其他发色": "other hair color, unique hair color",
   
   "雀斑": "freckles, freckled face",
   "胎记": "birthmark, skin mark",
   "纹身": "tattoo, body art",
   "伤疤": "scar, scarred",
   "胡须": "beard, facial hair",
-  "无": "no distinctive features",
+  
   
   "正面": "front view, facing forward",
   "左侧": "left profile, left side view",
   "右侧": "right profile, right side view",
   "背面": "back view, facing away",
-  "3/4侧面": "three-quarter view, 3/4 angle",
+  "3/4侧面_左": "three-quarter view, 3/4 angle left",
+  "3/4侧面_右": "three-quarter view, 3/4 angle right",
   
   "与镜头对视": "eye contact, looking at camera",
   "趋向左": "looking left, gaze to left",
@@ -85,12 +89,12 @@
   "翻滚": "rolling, tumbling",
   
   "俯视": "pitch down, looking down",
-  "仰视": "pitch up, looking up",
+  "看天": "pitch up, looking up",
   "左倾": "tilt left, leaning left",
   "右倾": "tilt right, leaning right",
-  "无": "no head tilt, neutral head position",
   
-  "无": "neutral expression, no expression",
+  
+  
   "微笑": "smile, smiling, happy expression",
   "愤怒": "angry, mad, furious, rage",
   "悲伤": "sad, crying, melancholy, sorrowful",
@@ -99,10 +103,14 @@
   "调皮": "playful, mischievous, cheeky",
   "狡黠": "sly, cunning, devious, smirk",
   
+  "全身罩袍": "full body tunic",
   "连衣裙": "dress, one-piece dress",
+  "连体超短裙": "one-piece mini dress",
   "连体裤": "jumpsuit, one-piece suit",
   "连身泳衣": "swimsuit, one-piece swimsuit",
-  "无": "no one-piece clothing",
+  "比基尼": "bikini",
+  "NSFW": "NSFW",
+ 
   
   "布料": "fabric, cloth material",
   "花纹布料": "patterned fabric, printed cloth",
@@ -114,7 +122,7 @@
   "钢制金属": "steel, steel material",
   "雕花金属": "engraved metal, carved metal",
   "雕花钢制金属": "engraved steel, carved steel",
-  "无": "no material specified",
+  
   
   "白色": "white color, white",
   "黑色": "black color, black",
@@ -126,7 +134,7 @@
   "粉色": "pink color, pink",
   "灰色": "gray color, gray",
   "棕色": "brown color, brown",
-  "无": "no color specified",
+  
   
   "T恤": "t-shirt, tee",
   "衬衫": "shirt, button-up shirt",
@@ -136,7 +144,7 @@
   "风衣": "trench coat, raincoat",
   "大衣": "coat, overcoat",
   "夹克": "bomber jacket, denim jacket",
-  "无": "no top",
+  
   
   "长裤": "pants, trousers",
   "牛仔裤": "jeans, denim pants",
@@ -145,14 +153,13 @@
   "迷你裙": "mini skirt, short skirt",
   "中长裙": "midi skirt, medium length skirt",
   "长裙": "long skirt, maxi skirt",
-  "连裤袜": "pantyhose, tights",
   "打底裤": "leggings, base layer pants",
-  "无": "no bottom",
+  
   
   "腿链": "leg chain, leg accessory",
   "脚链": "anklet, ankle chain",
   "手表": "watch, wristwatch",
-  "无": "no leg accessory",
+  
   
   "靴子": "boots, leather boots",
   "高跟鞋": "high heels, heeled shoes",
@@ -160,7 +167,7 @@
   "高跟凉鞋": "high heel sandals, heeled sandals",
   "凉鞋": "sandals, open shoes",
   "拖鞋": "slippers, house shoes",
-  "无": "no footwear",
+  
   
   "帽子": "hat, cap, beanie",
   "眼镜": "glasses, sunglasses",
@@ -171,12 +178,12 @@
   "项链": "necklace, chain",
   "耳环": "earrings, ear jewelry",
   "手链": "bracelet, wrist jewelry",
-  "无": "no accessories",
+  
   
   "持剑": "holding sword, sword wielder",
   "手杖": "staff, walking stick",
   "乐器": "musical instrument, instrument player",
-  "无": "no props",
+  
   
   "白色背景": "white background, plain white background",
   "室内": "indoor, interior, inside",
@@ -188,30 +195,40 @@
   "侧光": "side light, edge light",
   "柔光": "soft light, diffused light",
   "阴影": "shadow, shading",
-  "无": "no special lighting",
+  
   
   "浪漫": "romantic, love, passion",
   "紧张": "tense, suspense, anxiety",
   "恐怖": "horror, scary, frightening",
   "温馨": "warm, cozy, comfortable",
-  "无": "no specific mood",
+ 
   
   "风吹": "wind effect, wind blowing",
   "雨": "rain, raining, rainy",
   "雪": "snow, snowing, snowy",
   "火焰": "fire, flames, burning",
-  "无": "no special effects",
+  
   
   "简单腰带": "simple belt, basic belt",
   "复杂腰带": "complex belt, ornate belt, decorative belt",
   "挂包腰带": "utility belt, pouch belt, tactical belt",
-  "无": "no belt",
+  
   
   "简单肩带": "simple shoulder strap, basic shoulder strap",
   "复杂肩带": "complex shoulder strap, ornate shoulder strap, decorative shoulder strap",
   "双肩带": "double shoulder straps, dual shoulder straps, cross-body straps",
-  "无": "no shoulder straps",
+  
   
   "护肩": "shoulder guard, shoulder armor, pauldron",
-  "无": "no shoulder guard"
+  
+
+
+  "连裤袜": "pantyhose, tights",
+  "脚裸袜": "ankle",
+  "中筒袜": "crew",
+  "过膝袜": "knee_high",
+  "大腿袜": "thigh_high"
+  
+
+
 }

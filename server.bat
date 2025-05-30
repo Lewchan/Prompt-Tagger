@@ -1,4 +1,19 @@
 @echo off
 echo 🚀 正在启动服务器...
-start http://localhost:8000/test_index.html
-python -m http.server 8000 
+
+REM 检查Python是否安装
+python --version >nul 2>&1
+if errorlevel 1 (
+    echo ❌ Python未安装或未添加到环境变量！
+    echo 请安装Python并确保添加到环境变量。
+    pause
+    exit /b
+)
+
+REM 启动服务器
+echo ✅ 正在启动服务器...
+start http://localhost:8000
+python -m http.server 8000
+
+REM 如果服务器意外关闭，暂停以查看错误信息
+pause 
