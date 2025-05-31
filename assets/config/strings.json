@@ -1,4 +1,4 @@
-{
+﻿{
     "无": "none",
     "远景": "long shot, wide shot, character occupies 1/10 to 1/5 of frame",
     "中景": "medium shot, character occupies 1/5 to 1/2 of frame",
@@ -104,6 +104,7 @@
     "黑色": "black color, black",
     "红色": "red color, red",
     "蓝色": "blue color, blue",
+    "蓝灰色": "blue gray color, blue gray",
     "绿色": "green color, green",
     "黄色": "yellow color, yellow",
     "紫色": "purple color, purple",
