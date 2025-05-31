@@ -1,4 +1,4 @@
-{
+﻿{
     "无": "none",
     "远景": "long shot, wide shot, character occupies 1/10 to 1/5 of frame",
     "中景": "medium shot, character occupies 1/5 to 1/2 of frame",
@@ -83,7 +83,7 @@
     "冷漠": "neutral, expressionless, stoic, blank",
     "调皮": "playful, mischievous, cheeky",
     "狡黠": "sly, cunning, devious, smirk",
-    "全身罩袍": "full body tunic",
+    "长罩袍": "long_tunic",
     "连衣裙": "dress, one-piece dress",
     "连体超短裙": "one-piece mini dress",
     "连体裤": "jumpsuit, one-piece suit",
@@ -180,5 +180,14 @@
     "大腰包": "large pocket",
     "小腰包": "small pocket",
     "多腰包": "pockets",
-    "强光": "strength_light"
+    "强光": "strength_light",
+    "左手叉腰": "left_hand_on_hip",
+    "右手叉腰": "right_hand_on_hip",
+    "现代": "modern",
+    "中世纪": "medieval",
+    "科幻": "S_Fantasy",
+    "废土": "wasteland",
+    "长披风罩袍": "long_cloak_tunic",
+    "短罩袍": "short_tunic",
+    "古风": "Gufeng style"
 }
