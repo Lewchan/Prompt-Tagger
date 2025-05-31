@@ -46,6 +46,8 @@
             border: 2px solid #dc3545;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
+            max-height: 100%;
         }
         
         .panel-title {
@@ -173,7 +175,8 @@
         }
         
         #result {
-            flex: 1;
+            flex: 0 0 auto;
+            min-height: 200px;
             padding: 15px;
             border: 1px solid #ccc;
             border-radius: 5px;
@@ -215,6 +218,30 @@
             border: 1px solid #ddd;
         }
         
+        .add-enum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .add-enum-header:hover {
+            background-color: #dee2e6;
+        }
+        
+        .add-enum-content {
+            display: none;
+            padding: 10px;
+        }
+        
+        .add-enum-content.show {
+            display: block;
+        }
+        
         .form-group {
             margin-bottom: 10px;
         }
@@ -254,6 +281,49 @@
         .add-enum-btn:hover {
             background-color: #218838;
         }
+
+        .pre-prompt-input {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .pre-prompt-input label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .pre-prompt-input input {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .pre-prompt-input input:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .pre-prompt-input textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .pre-prompt-input textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -283,33 +353,47 @@
             
             <!-- 添加新的枚举表单 -->
             <div class="add-enum-section">
-                <div class="panel-title">➕ 添加新标签枚举</div>
-                <div class="form-group">
-                    <label for="enum_category">分类名称：</label>
-                    <input type="text" id="enum_category" placeholder="例如：人物特征">
+                <div class="add-enum-header" onclick="toggleAddEnumForm()">
+                    <div class="panel-title">➕ 添加新标签枚举</div>
+                    <span class="toggle-icon">▼</span>
                 </div>
-                <div class="form-group">
-                    <label for="enum_name">枚举名称：</label>
-                    <input type="text" id="enum_name" placeholder="例如：性别">
+                <div class="add-enum-content">
+                    <div class="form-group">
+                        <label for="enum_category">分类名称：</label>
+                        <input type="text" id="enum_category" placeholder="例如：人物特征">
+                    </div>
+                    <div class="form-group">
+                        <label for="enum_name">枚举名称：</label>
+                        <input type="text" id="enum_name" placeholder="例如：性别">
+                    </div>
+                    <div class="form-group">
+                        <label for="enum_key">枚举键名：</label>
+                        <input type="text" id="enum_key" placeholder="例如：gender">
+                    </div>
+                    <div class="form-group">
+                        <label for="enum_values">枚举值（用逗号分隔）：</label>
+                        <input type="text" id="enum_values" placeholder="例如：男性,女性">
+                    </div>
+                    <div class="form-group">
+                        <label for="enum_english">英文映射（用逗号分隔）：</label>
+                        <input type="text" id="enum_english" placeholder="例如：male,female">
+                    </div>
+                    <div class="form-group">
+                        <label for="enum_default">默认值：</label>
+                        <input type="text" id="enum_default" placeholder="例如：女性">
+                    </div>
+                    <button class="add-enum-btn" onclick="Add_New_Enum()">添加枚举</button>
                 </div>
-                <div class="form-group">
-                    <label for="enum_key">枚举键名：</label>
-                    <input type="text" id="enum_key" placeholder="例如：gender">
-                </div>
-                <div class="form-group">
-                    <label for="enum_values">枚举值（用逗号分隔）：</label>
-                    <input type="text" id="enum_values" placeholder="例如：男性,女性">
-                </div>
-                <div class="form-group">
-                    <label for="enum_english">英文映射（用逗号分隔）：</label>
-                    <input type="text" id="enum_english" placeholder="例如：male,female">
-                </div>
-                <button class="add-enum-btn" onclick="Add_New_Enum()">添加枚举</button>
             </div>
             
             <div class="filename-input">
                 <label for="filename">📄 文件名：</label>
                 <input type="text" id="filename" placeholder="输入文件名（不需要.txt后缀）" value="prompt">
+            </div>
+
+            <div class="pre-prompt-input">
+                <label for="pre_prompt_input">前置提示词：</label>
+                <textarea id="pre_prompt_input" placeholder="输入前置提示词"></textarea>
             </div>
             
             <div class="control-buttons">
@@ -389,57 +473,71 @@
                     'belt_type': '无',
                     'belt_color': '无',
                     'shoulder_strap_type': '无',
-                    'shoulder_strap_color': '无'
+                    'shoulder_strap_color': '无',
+                    'pocket': '无',
+                    'stocking': '无'
                 };
                 
-                // 遍历所有枚举，创建按钮组
+                // 按分类分组
+                const categories = {};
                 for (const [key, data] of Object.entries(all_enums)) {
-                    // 创建分类区域
+                    if (!categories[data.category]) {
+                        categories[data.category] = [];
+                    }
+                    categories[data.category].push({key, data});
+                }
+                
+                // 渲染：每个大分类一个大框，内部每个枚举有自己的标题和按钮组
+                for (const [category, items] of Object.entries(categories)) {
+                    // 创建大分类区域
                     const categoryDiv = document.createElement('div');
                     categoryDiv.className = 'category-section';
                     
-                    // 创建分类标题
-                    const titleDiv = document.createElement('div');
-                    titleDiv.className = 'category-title';
-                    titleDiv.textContent = `${data.category} - ${data.name}`;
-                    categoryDiv.appendChild(titleDiv);
+                    // 大分类标题
+                    const bigTitle = document.createElement('div');
+                    bigTitle.className = 'category-title';
+                    bigTitle.textContent = category;
+                    categoryDiv.appendChild(bigTitle);
                     
-                    // 创建按钮组容器
-                    const buttonGroup = document.createElement('div');
-                    buttonGroup.className = 'button-group';
-                    
-                    // 添加选项按钮
-                    for (const item of data.options) {
-                        const button = document.createElement('button');
-                        button.className = 'option-button';
-                        button.textContent = item;
-                        button.onclick = function() {
-                            // 移除同组其他按钮的选中状态
-                            const buttons = buttonGroup.querySelectorAll('.option-button');
-                            buttons.forEach(btn => btn.classList.remove('selected'));
-                            
-                            // 设置当前按钮为选中状态
-                            this.classList.add('selected');
-                            
-                            // 更新选择记录
-                            all_selections[key] = item;
-                        };
+                    // 遍历该分类下所有枚举
+                    items.forEach(({key, data}) => {
+                        // 小枚举标题
+                        const enumTitle = document.createElement('div');
+                        enumTitle.style = 'font-weight:bold;margin:8px 0 4px 0;';
+                        enumTitle.textContent = data.name;
+                        categoryDiv.appendChild(enumTitle);
                         
-                        // 设置默认选中状态
-                        if (default_values[key] === item) {
-                            button.classList.add('selected');
-                            all_selections[key] = item;
-                        }
-                        
-                        buttonGroup.appendChild(button);
-                    }
-                    
-                    categoryDiv.appendChild(buttonGroup);
+                        // 按钮组
+                        const buttonGroup = document.createElement('div');
+                        buttonGroup.className = 'button-group';
+                        data.options.forEach(item => {
+                            const button = document.createElement('button');
+                            button.className = 'option-button';
+                            button.textContent = item;
+                            button.onclick = function() {
+                                // 移除同组其他按钮的选中状态
+                                const buttons = buttonGroup.querySelectorAll('.option-button');
+                                buttons.forEach(btn => btn.classList.remove('selected'));
+                                this.classList.add('selected');
+                                all_selections[key] = item;
+                            };
+                            if (default_values[key] === item) {
+                                button.classList.add('selected');
+                                all_selections[key] = item;
+                            }
+                            buttonGroup.appendChild(button);
+                        });
+                        categoryDiv.appendChild(buttonGroup);
+                    });
                     container.appendChild(categoryDiv);
                 }
-                
-                // 显示成功消息
-                alert('✅ 标签选项加载成功！');
+
+                // 设置枚举名称输入框的监听器
+                setupEnumNameListener();
+
+                // 设置自动添加逗号功能
+                setupCommaAppender();
+
             } catch (error) {
                 console.error('加载枚举数据失败：', error);
                 alert('❌ 加载标签选项失败，请检查网络连接或刷新页面重试');
@@ -459,241 +557,300 @@
             
             // 清空结果显示
             document.getElementById('result').innerHTML = '💡 点击"预览结果"按钮查看生成的标签文本';
-            
-            // 显示成功消息
-            alert('✅ 所有选择已清空！');
         }
         
         
         // 函数：预览结果
         function Preview_Result() {
-            // 获取所有选择（包括空值）
-            const selected_values = Object.entries(all_enums).map(([key, data]) => {
-                const value = all_selections[key] || '无';
-                return `${data.name}:${value}`;
-            });
+            // 获取前置提示词
+            const prePrompt = document.getElementById('pre_prompt_input').value.trim();
             
+            // 先分组
+            const categories = {};
+            for (const [key, data] of Object.entries(all_enums)) {
+                if (!categories[data.category]) categories[data.category] = [];
+                categories[data.category].push({key, data});
+            }
+            // 按页面顺序遍历生成的标签
+            const generatedTags = [];
+            for (const [category, items] of Object.entries(categories)) {
+                for (const {key, data} of items) {
+                    const value = all_selections[key] || '无';
+                    generatedTags.push(`${data.name}:${value}`);
+                }
+            }
+            
+            // 拼接最终结果
+            let finalResult = '';
+            if (prePrompt) {
+                finalResult += prePrompt + '\n\n'; // 前置提示词，后面加两个换行分隔
+            }
+            finalResult += generatedTags.join('\n');
+
             // 显示结果
             const result_div = document.getElementById('result');
-            if (selected_values.length > 0) {
-                result_div.innerHTML = `中文标签预览:\n${selected_values.join('\n')}`;
+            if (finalResult) {
+                 result_div.innerHTML = `中文标签预览:\n${finalResult}`;
             } else {
-                result_div.innerHTML = '⚠️ 请先加载标签选项';
+                 result_div.innerHTML = '⚠️ 请先加载标签选项或输入前置提示词';
             }
         }
         
         // 函数：生成结果
         function Generate_Result() {
-            // 获取所有选择（包括空值）
-            const selected_values = Object.entries(all_enums).map(([key, data]) => {
-                const value = all_selections[key] || '无';
-                const english_value = strings_map[value] || 'none';
-                return `${key}:${english_value}`;
-            });
-            
+            // 获取前置提示词
+            const prePrompt = document.getElementById('pre_prompt_input').value.trim();
+
+            // 先分组
+            const categories = {};
+            for (const [key, data] of Object.entries(all_enums)) {
+                if (!categories[data.category]) categories[data.category] = [];
+                categories[data.category].push({key, data});
+            }
+            // 按页面顺序遍历生成的英文标签
+            const generatedEnglishLines = [];
+            for (const [category, items] of Object.entries(categories)) {
+                for (const {key, data} of items) {
+                    const value = all_selections[key] || '无';
+                    const english_value = strings_map[value] || 'none';
+                    generatedEnglishLines.push(`${key}:${english_value}`); // 每个枚举一行
+                }
+            }
+
+            // 拼接最终结果
+            let finalResult = '';
+            if (prePrompt) {
+                finalResult += prePrompt + '\n\n'; // 前置提示词，后面加两个换行分隔
+            }
+            finalResult += generatedEnglishLines.join('\n'); // 英文标签列表用换行分隔
+
             // 显示结果
             const result_div = document.getElementById('result');
-            if (selected_values.length > 0) {
-                result_div.innerHTML = `英文标签预览:\n${selected_values.join('\n')}`;
-            } else {
-                result_div.innerHTML = '⚠️ 请先加载标签选项';
-            }
+             if (finalResult) {
+                 result_div.innerHTML = `英文标签预览:\n${finalResult}`;
+             } else {
+                 result_div.innerHTML = '⚠️ 请先加载标签选项或输入前置提示词';
+             }
         }
         
         // 函数：下载结果
         function Download_Result() {
             // 获取文件名
             const filename = document.getElementById('filename').value.trim() || 'prompt';
-            
-            // 获取所有选择（包括空值）
-            const selected_values = Object.entries(all_enums).map(([key, data]) => {
-                const value = all_selections[key] || '无';
-                const english_value = strings_map[value] || 'none';
-                return `${key}:${english_value},`;
-            });
-            
-            // 检查是否有选择
-            if (selected_values.length === 0) {
-                alert('❌ 请先加载标签选项');
+            // 获取前置提示词
+            const prePrompt = document.getElementById('pre_prompt_input').value.trim();
+
+            // 先分组
+            const categories = {};
+            for (const [key, data] of Object.entries(all_enums)) {
+                if (!categories[data.category]) categories[data.category] = [];
+                categories[data.category].push({key, data});
+            }
+            // 按页面顺序遍历生成的英文标签
+            const generatedEnglishLines = [];
+            for (const [category, items] of Object.entries(categories)) {
+                for (const {key, data} of items) {
+                    const value = all_selections[key] || '无';
+                    const english_value = strings_map[value] || 'none';
+                    generatedEnglishLines.push(`${key}:${english_value}`); // 每个枚举一行
+                }
+            }
+
+            // 拼接下载内容
+            let download_content = '';
+             if (prePrompt) {
+                 download_content += prePrompt + '\n\n'; // 前置提示词，后面加两个换行分隔
+             }
+            download_content += generatedEnglishLines.join('\n'); // 英文标签列表用换行分隔
+
+            // 检查是否有内容可以下载
+            if (!download_content) {
+                alert('❌ 没有内容可以下载，请先加载标签选项、输入前置提示词或进行选择');
                 return;
             }
-            
-            // 创建下载内容
-            const download_content = selected_values.join('\n');
-            
+
             // 创建下载链接
             const blob = new Blob([download_content], { type: 'text/plain;charset=utf-8' });
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
             a.download = `${filename}.txt`;
-            
             // 触发下载
             document.body.appendChild(a);
             a.click();
-            
             // 清理
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-            
             // 显示成功消息
-            alert('✅ 英文标签文件下载成功！');
+            // alert('✅ 英文标签文件下载成功！'); // 移除弹窗
+        }
+        
+        // 函数：折叠功能
+        function toggleAddEnumForm() {
+            const content = document.querySelector('.add-enum-content');
+            const icon = document.querySelector('.toggle-icon');
+            content.classList.toggle('show');
+            icon.textContent = content.classList.contains('show') ? '▼' : '▶';
         }
         
         // 函数：添加新的枚举
         async function Add_New_Enum() {
             try {
+                console.log('开始添加新枚举...');
                 // 获取表单数据
                 const category = document.getElementById('enum_category').value.trim();
                 const name = document.getElementById('enum_name').value.trim();
                 const key = document.getElementById('enum_key').value.trim();
                 const values = document.getElementById('enum_values').value.trim().split(',').map(v => v.trim());
                 const english = document.getElementById('enum_english').value.trim().split(',').map(v => v.trim());
-                
-                // 验证数据
+                const defaultValue = document.getElementById('enum_default').value.trim();
+                console.log('表单数据：', { category, name, key, values, english, defaultValue });
+                // 校验
                 if (!category || !name || !key || values.length === 0 || english.length === 0) {
                     alert('❌ 请填写所有字段！');
                     return;
                 }
-                
                 if (values.length !== english.length) {
                     alert('❌ 枚举值和英文映射数量不匹配！');
                     return;
                 }
-                
-                console.log('开始读取现有数据...');
-                
+                if (defaultValue && !values.includes(defaultValue)) {
+                    alert('❌ 默认值必须在枚举值列表中！');
+                    return;
+                }
                 // 读取现有数据
                 let enumsData = {};
                 let stringsData = {};
-                
                 try {
                     const enumsResponse = await fetch('assets/config/enums.json');
-                    if (!enumsResponse.ok) {
-                        console.log('enums.json不存在，将创建新文件');
-                    } else {
-                        enumsData = await enumsResponse.json();
-                        console.log('成功读取enums.json');
-                    }
-                } catch (error) {
-                    console.log('enums.json不存在，将创建新文件');
-                }
-                
+                    if (enumsResponse.ok) enumsData = await enumsResponse.json();
+                } catch {}
                 try {
                     const stringsResponse = await fetch('assets/config/strings.json');
-                    if (!stringsResponse.ok) {
-                        console.log('strings.json不存在，将创建新文件');
-                    } else {
-                        stringsData = await stringsResponse.json();
-                        console.log('成功读取strings.json');
-                    }
-                } catch (error) {
-                    console.log('strings.json不存在，将创建新文件');
-                }
-                
-                // 检查键名是否已存在
+                    if (stringsResponse.ok) stringsData = await stringsResponse.json();
+                } catch {}
+                // 判断是否为追加模式
                 if (enumsData[key]) {
-                    alert('❌ 该枚举键名已存在！');
-                    return;
+                    // 只添加新条目
+                    const oldOptions = enumsData[key].options;
+                    const newOptions = [];
+                    const newEnglish = [];
+                    values.forEach((v, i) => {
+                        if (!oldOptions.includes(v)) {
+                            newOptions.push(v);
+                            newEnglish.push(english[i]);
+                        }
+                    });
+                    if (newOptions.length === 0) {
+                        alert('❌ 所有条目都已存在，无需添加');
+                        return;
+                    }
+                    // 追加到 options
+                    enumsData[key].options = oldOptions.concat(newOptions);
+                    // 追加到 strings
+                    newOptions.forEach((v, i) => {
+                        stringsData[v] = newEnglish[i];
+                    });
+                    // 保持原有分类和名称
+                    enumsData[key].category = enumsData[key].category || category;
+                    enumsData[key].name = enumsData[key].name || name;
+                } else {
+                    // 新建枚举
+                    enumsData[key] = {
+                        category: category,
+                        name: name,
+                        options: values
+                    };
+                    values.forEach((v, i) => {
+                        stringsData[v] = english[i];
+                    });
                 }
-                
-                console.log('添加新的枚举数据...');
-                
-                // 添加新的枚举数据
-                enumsData[key] = {
-                    category: category,
-                    name: name,
-                    options: values
-                };
-                
-                // 添加新的字符串映射
-                values.forEach((value, index) => {
-                    stringsData[value] = english[index];
-                });
-                
-                console.log('保存数据到文件...');
-                
                 // 保存到文件
                 const saveResponse = await fetch('/api/save_enum', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        enums: enumsData,
-                        strings: stringsData
-                    })
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enums: enumsData, strings: stringsData })
                 });
-                
-                if (!saveResponse.ok) {
-                    throw new Error(`保存失败: ${saveResponse.status}`);
-                }
-                
+                if (!saveResponse.ok) throw new Error(`保存失败: ${saveResponse.status}`);
                 const saveResult = await saveResponse.json();
-                
-                if (!saveResult.success) {
-                    throw new Error(saveResult.message);
-                }
-                
-                console.log('创建新的分类区域...');
-                
-                // 创建新的分类区域
-                const categoryDiv = document.createElement('div');
-                categoryDiv.className = 'category-section';
-                
-                // 创建分类标题
-                const titleDiv = document.createElement('div');
-                titleDiv.className = 'category-title';
-                titleDiv.textContent = `${category} - ${name}`;
-                categoryDiv.appendChild(titleDiv);
-                
-                // 创建按钮组容器
-                const buttonGroup = document.createElement('div');
-                buttonGroup.className = 'button-group';
-                
-                // 添加选项按钮
-                values.forEach(value => {
-                    const button = document.createElement('button');
-                    button.className = 'option-button';
-                    button.textContent = value;
-                    button.onclick = function() {
-                        // 移除同组其他按钮的选中状态
-                        const buttons = buttonGroup.querySelectorAll('.option-button');
-                        buttons.forEach(btn => btn.classList.remove('selected'));
-                        
-                        // 设置当前按钮为选中状态
-                        this.classList.add('selected');
-                        
-                        // 更新选择记录
-                        all_selections[key] = value;
-                    };
-                    
-                    buttonGroup.appendChild(button);
-                });
-                
-                categoryDiv.appendChild(buttonGroup);
-                
-                // 添加到左侧面板
-                const container = document.getElementById('dropdowns_container');
-                container.appendChild(categoryDiv);
-                
-                // 更新全局变量
-                all_enums = enumsData;
-                strings_map = stringsData;
-                
+                if (!saveResult.success) throw new Error(saveResult.message);
+                // 刷新左侧枚举区（重新加载）
+                await Load_All_Enums();
                 // 清空表单
                 document.getElementById('enum_category').value = '';
                 document.getElementById('enum_name').value = '';
                 document.getElementById('enum_key').value = '';
                 document.getElementById('enum_values').value = '';
                 document.getElementById('enum_english').value = '';
-                
-                // 显示成功消息
-                alert('✅ 新枚举添加成功！');
+                document.getElementById('enum_default').value = '';
             } catch (error) {
                 console.error('添加枚举失败：', error);
                 alert('❌ 添加失败：' + error.message + '\n请查看控制台获取详细信息');
             }
+        }
+
+        // 函数：设置枚举名称输入框的监听器
+        function setupEnumNameListener() {
+            const enumNameInput = document.getElementById('enum_name');
+            const enumKeyInput = document.getElementById('enum_key');
+
+            if (!enumNameInput || !enumKeyInput || !all_enums) {
+                // 如果元素或数据未准备好，稍后重试或退出
+                console.log('元素或枚举数据未准备好，无法设置监听器。');
+                return;
+            }
+
+            enumNameInput.addEventListener('input', function() {
+                const enteredName = this.value.trim();
+                let matchedKey = '';
+
+                if (enteredName) {
+                    // 遍历all_enums查找匹配的枚举名称
+                    for (const key in all_enums) {
+                        if (all_enums[key].name === enteredName) {
+                            matchedKey = key;
+                            break; // 找到第一个匹配项就停止
+                        }
+                    }
+                }
+
+                // 填充或清空枚举键名输入框
+                enumKeyInput.value = matchedKey;
+            });
+
+            console.log('枚举名称输入框监听器已设置。');
+        }
+
+        // 函数：设置自动添加逗号功能
+        function setupCommaAppender() {
+            const enumValuesInput = document.getElementById('enum_values');
+            const enumEnglishInput = document.getElementById('enum_english');
+
+            if (!enumValuesInput || !enumEnglishInput) {
+                console.log('枚举值或英文映射输入框未准备好，无法设置逗号追加器。');
+                return;
+            }
+
+            const addComma = function(event) {
+                // 检查是否是空格键
+                if (event.key === ' ') {
+                    const input = event.target;
+                    let value = input.value;
+
+                    // 避免在开头或已经有逗号后面添加逗号
+                    if (value.length > 0 && value.endsWith(' ') && !value.trim().endsWith(',')) {
+                         // 移除末尾的空格，添加逗号
+                        input.value = value.trim() + ',';
+                         // 阻止默认的空格行为
+                         event.preventDefault();
+                    }
+                }
+            };
+
+            enumValuesInput.addEventListener('keyup', addComma);
+            enumEnglishInput.addEventListener('keyup', addComma);
+
+            console.log('自动添加逗号功能已设置。');
         }
     </script>
 </body>
