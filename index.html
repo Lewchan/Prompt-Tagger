@@ -696,6 +696,7 @@
             document.body.removeChild(a);
             // 显示成功消息
             // alert('✅ 英文标签文件下载成功！'); // 移除弹窗
+
         }
         
         // 函数：折叠功能
@@ -707,8 +708,7 @@
         }
         
         // 函数：添加新的枚举选项
-        function Add_New_Enum() 
-        {
+        function Add_New_Enum() {
             const newKey = document.getElementById('new_enum_key').value.trim();
             const newValueString = document.getElementById('new_enum_value').value.trim();
             const newEnglishValueString = document.getElementById('new_enum_english').value.trim();
@@ -843,7 +843,7 @@
                 alert('❌ 调用保存接口出错：' + error);
             }
         }
-
+        
         // 函数：更新枚举显示（重新加载并渲染）
         function Update_Enum_Display() {
             // 清空下拉框容器
@@ -973,6 +973,7 @@
 
         // 在页面加载完成后加载枚举
         window.onload = Load_All_Enums;
+
     </script>
 </body>
 </html> 

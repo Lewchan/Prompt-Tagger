@@ -1,4 +1,6 @@
+﻿
 {
+
     "无": "none",
     "远景": "long shot, wide shot, character occupies 1/10 to 1/5 of frame",
     "中景": "medium shot, character occupies 1/5 to 1/2 of frame",
@@ -90,14 +92,16 @@
     "连身泳衣": "swimsuit, one-piece swimsuit",
     "比基尼": "bikini",
     "NSFW": "NSFW",
-    "布料": "fabric",
+
+   
+     "布料": "fabric, cloth material",
     "花纹布料": "patterned fabric, printed cloth",
     "镶边布料": "trimmed fabric, edged cloth",
     "镶边花纹布料": "trimmed patterned fabric, edged printed cloth",
-    "皮革": "leather",
+    "皮革": "leather, leather material",
     "雕花皮革": "engraved leather, carved leather",
-    "金属": "metal",
-    "钢制金属": "steel",
+    "金属": "metal, metallic material",
+    "钢制金属": "steel, steel material",
     "雕花金属": "engraved metal, carved metal",
     "雕花钢制金属": "engraved steel, carved steel",
     "白色": "white color, white",
@@ -189,6 +193,7 @@
     "废土": "wasteland",
     "长披风罩袍": "long_cloak_tunic",
     "短罩袍": "short_tunic",
+
     "古风": "Gufeng style",
     "皮鞋": "shops",
     "长筒靴": "top_boot",
@@ -201,4 +206,5 @@
     "长马尾": "long_ponytail",
     "短马尾": "short_ponytail",
     "肥胖": "fat"
+
 }
