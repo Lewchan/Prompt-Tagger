@@ -604,7 +604,7 @@
             for (const [category, items] of Object.entries(categories)) {
                 for (const {key, data} of items) {
                     const value = all_selections[key] || '无';
-                    generatedTags.push(`${data.name}:${value}`);
+                    generatedTags.push(`${data.name}:${value},`); // 每行后加逗号
                 }
             }
             
@@ -641,7 +641,7 @@
                 for (const {key, data} of items) {
                     const value = all_selections[key] || '无';
                     const english_value = strings_map[value] || 'none';
-                    generatedEnglishLines.push(`${key}:${english_value}`); // 每个枚举一行
+                    generatedEnglishLines.push(`${key}:${english_value},`); // 每行后加逗号
                 }
             }
 
@@ -680,7 +680,7 @@
                 for (const {key, data} of items) {
                     const value = all_selections[key] || '无';
                     const english_value = strings_map[value] || 'none';
-                    generatedEnglishLines.push(`${key}:${english_value}`); // 每个枚举一行
+                    generatedEnglishLines.push(`${key}:${english_value},`); // 每行后加逗号
                 }
             }
 
